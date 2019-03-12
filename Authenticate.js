@@ -1,22 +1,40 @@
-//Defining Authentication object
+/** @module Authentication */
+/** @class */
 var Authentication = function() {};
 
 //Defining Authentication member variables
+/** @member {string} */
 Authentication.prototype.model = ""; //serialization of trained model
+/** @member {string} */
 Authentication.prototype.label = "";
+/** @member {Object} */
 Authentication.prototype.image = null;
+/** @member {Array} */
 Authentication.prototype.images = null;
 
 //Defining Authentication functions
-//convert Base64 to image
+/** @function toBase64 */
+/**
+ * Convert an image into a Base64 string.
+ * @param {string} base64 - The Base64 string of the image.
+ */
 Authentication.prototype.toBase64 = function(img) {
 }
 
-//convert image to Base64
+/** @function toImage */
+/**
+ * Convert a Base64 string into an image.
+ * @param {string} base64 - The Base64 string of the image.
+ */
 Authentication.prototype.toImage = function(base64) {
 }
 
-//train model
+/** @function train */
+/**
+ * Train the model with images and a classification label.
+ * @param {Array} imgsClient - The images of the client.
+ * @param {string} lblClient - The client name or ID.
+ */
 Authentication.prototype.train = function(imgsClient,lblClient) {
   if (imgsClient != null && lblClient != "") {
     
@@ -25,7 +43,11 @@ Authentication.prototype.train = function(imgsClient,lblClient) {
   }
 }
 
-//authentication method
+/** @function authenticate */
+/**
+ * Recognize the face of the client.
+ * @param {object} img - The image of the client.
+ */
 Authentication.prototype.authenticate = function(img) {
 }
 
