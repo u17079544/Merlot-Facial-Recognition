@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-//var authenticate = require('./Authenticate.js')
-//var authenticate = require('./Register.js')
+var authenticate = require('./Authenticate.js')
+//var Register = require('./Register.js')
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
@@ -16,7 +16,8 @@ app.post('/', function(req, res)
 			//will pass req.body.image
 			//run authenticate function
 			//return clientid or error
-			res.send("1");
+			var clientID = authenticate.Authentication(req.body.image);
+			res.send(clientID);
 		break;
 		case "register":
 			//will pass req.body.clientID
