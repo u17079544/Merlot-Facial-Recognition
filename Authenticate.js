@@ -9,7 +9,7 @@ Authentication.prototype.model = ""; //serialization of trained model
 Authentication.prototype.label = "";
 /** @member {Object} */
 Authentication.prototype.image = null;
-/** @member {Array} */
+/** @member {JSONArray} - The images in a JSON array in base64 format */
 Authentication.prototype.images = null;
 
 //Defining Authentication functions
@@ -34,18 +34,42 @@ Authentication.prototype.toImage = function(base64) {
   return Buffer.from(base64,"base64");
 }
 
+/** @function getFakeFaces */
+/**
+ * Get fake faces from filesystem.
+ * @returns {Object} - The image in jpg/gif/png.
+ */
+Authentication.prototype.getFakeFaces() {
+  const fs = require('fs');
+  //complete later ...
+}
+
 /** @function train */
 /**
  * Train the model with images and a classification label.
- * @param {Array} imgsClient - The images of the client.
+ * @param {JSONArray} imgsClient - The images of the client in a JSON Array in base64 format.
  * @param {string} lblClient - The client name or ID.
  * @returns {JSONObject} -  The trained model in json.
  */
 Authentication.prototype.train = function(imgsClient,lblClient) {
+  const fr = require("face-recognition");
+  const recognizer = fr.FaceRecognizer();
+  const clientFaces = [];
+  const fakeFaces = [];
+  
   if (imgsClient != null && lblClient != "") {
+    imgsClient.forEach(function(image) {
+      clientFaces.push(this.toImage(image)); //converting image that are in base64
+    });
     
+    const numJitters = 15;
+    recognizer.addFaces(clientFaces, lblClient, numJitters);
+    recognizer.addFaces(fakeFaces, "fake", numJitters);
+    const modelState = recognizer.serialize();
+    
+    return modelState;
   } else {
-    //send error
+    return {null};
   }
 }
 
@@ -57,8 +81,8 @@ Authentication.prototype.train = function(imgsClient,lblClient) {
  */
 Authentication.prototype.authenticate = function(img) {
   const fr = require("face-recognition");
-  const recognizer = fr.FaceRecognizer();
   const db = require("database.js");
+  const recognizer = fr.FaceRecognizer();
   const table = db.getDataBank();
   var clientID = "";
   
@@ -66,6 +90,8 @@ Authentication.prototype.authenticate = function(img) {
     var modelState = row.model;
     recognizer.load(modelState);
     var prediction = recognizer.predict(img);
+    if ((1 - prediction[0].distance) > 0.85) 
+      clientID = prediction[0].className;
   });
   
   if (clientID == "")
