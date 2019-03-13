@@ -10,7 +10,7 @@ module.exports = function(){
 			images[i] = buff.toString('base64');
 		}
 
-		obj.table.push({id: client_id, images: [images_json], active: true});
+		obj.table.push({id: client_id, images: [images_json], model: {}, active: true});
 		fs.writeFile('databank.json', JSON.stringify(obj), function(error){
 			if(error) throw error;
 			else return true;
