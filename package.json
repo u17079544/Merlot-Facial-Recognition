@@ -2,7 +2,7 @@
   "name": "facial_recognition_database",
   "version": "1.0.0",
   "description": "Connect and communicate with the MongoDB database.",
-  "main": "GETMethodTest.js",
+  "main": "GETMethod.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
