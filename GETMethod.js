@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 //var authenticate = require('./Authenticate.js')
-//var authenticate = require('./Register.js')
+//var database = require('./database.js')
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
@@ -33,21 +33,22 @@ app.post('/', function(req, res)
 				//will pass req.body.end
 				//run log function
 				//return array of date and clientid as json object
-				var now = new Date();
-				var jsonDate = now.toJSON();
 				var obj = 	{
 								log: [
 									{
-										date: jsonDate,
+										date: "2014-01-01T23:28:56.782Z",
 										clientid: 1234
 									},
 									{
-										date: jsonDate,
+										date: "2014-01-01T23:28:56.782Z",
 										clientid: 2345
 									}
 								]
 							};
 				res.send(JSON.stringify(obj));
+			break;
+			default:
+				res.send("incorrect format");
 			break;
 		}
 	}
