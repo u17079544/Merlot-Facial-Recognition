@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node test.js"
+    "test": "mocha GETMethodTest.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -24,7 +24,9 @@
   },
   "devDependencies": {
     "request": "^2.88.0",
-    "tape": "^4.7.0"
+    "tape": "^4.7.0",
+    "chai": "^4.2.0",
+    "mocha": "^6.0.2"
   },
   "repository": {
     "type": "git",
