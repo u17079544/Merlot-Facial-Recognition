@@ -1,6 +1,26 @@
 const ip = require('./image-processor.js');
 const b64Converter = require('base64-img');
 const assert = require('chai').assert;
+const i2b = require('image-to-base64');
+
+const number_of_images = 20; 
+
+//convert images to base64
+function convert_from_disk() {
+	var json_array = [];
+	for (var i=0; i < number_of_images; i++) {
+		i2b('./t' + i + '.jpg').then(
+        	(response) => {
+           		json_array.push(response);
+        	}
+    	).catch(
+        	(error) => {
+            	console.log(error);
+        	}
+    	)		
+	}
+	return json_array;
+}
 
 //write tests for validate_image
 	//what could go wrong:
