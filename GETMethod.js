@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
+//const faceRec = require('face-recog.js');
 //var authenticate = require('./Authenticate.js')
 //var database = require('./database.js')
 
@@ -17,6 +18,14 @@ app.post('/', function(req, res)
 			case "authenticate":
 				//will pass req.body.image
 				//run authenticate function
+				/*
+				var obj = {};
+				try {
+					obj.clientid = faceRec.authenticate_user(req.body.image); 
+				} catch(msg) {
+					obj.error = msg;
+				}
+				*/
 				//return clientid or error
 				var obj = {clientid: 1234};
 				res.send(JSON.stringify(obj));
