@@ -11,4 +11,4 @@ Send a JSON object of the form to port 3000:
 }
 ```
 ## Image constraints
-- Dimensions must at least 200X200.
+- Dimensions must be 200X200 and above.
