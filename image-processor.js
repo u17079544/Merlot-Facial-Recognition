@@ -3,6 +3,12 @@ const fr = require('face-recognition');
 
 const detector = fr.FaceDetector();
 
+/** @function process_image */
+/**
+ * Train the model with images and a classification label.
+ * @param {string} base64_image - An image in base64 format containing a face.
+ * @returns {Object} -  The processed image containing only a face.
+ */
 const process_image = (base64_image) => {
 	var image_path = '';
 	var temp_image = null;
@@ -20,6 +26,12 @@ const process_image = (base64_image) => {
 	return face;
 };
 
+/** @function train_model */
+/**
+ * Train the model with images and a classification label.
+ * @param {JSONArray} json_base64_images - The images containing faces, in a JSON Array in base64 format.
+ * @returns {Array} - An array of processed images containing only faces.
+ */
 const process_images = (json_base64_images) => {
 	var image_path = '';
 	var temp_image = null;
@@ -43,6 +55,8 @@ const process_images = (json_base64_images) => {
 };
 
 //helper functions
+const validate_image = (image) => {};
+
 const convert_image = (base64_image) => {
 	var matches = base64_image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
 	var image_info = {};
