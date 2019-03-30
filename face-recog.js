@@ -37,7 +37,7 @@ const load_models = () => {
 
 /** @function authenticate_client */
 /**
- * Train the model with images and a classification label.
+ * Authenticates using the client's face image
  * @param {string} client_base64_image - The client's image in base64 format.
  * @returns {string} -  client ID if there is a match.
  * @throws {NoMatchException} client is not in the database
