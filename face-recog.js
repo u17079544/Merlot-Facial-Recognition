@@ -5,6 +5,13 @@ const fr = require('face-recognition');
 
 const recognizer = fr.FaceRecognizer();
 
+/** @function train_model */
+/**
+ * Train the model with images and a classification label.
+ * @param {string} client_id - The client ID.
+ * @param {JSONArray} json_base64_images - The images of the client in a JSON Array in base64 format.
+ * @returns {JSONObject} -  The trained model in json.
+ */
 const train_model = (client_id, json_base64_images) => {
 	var face_training_set = ip.process_images(json_base64_images);
 	var face_model = null; 
@@ -22,11 +29,20 @@ const save_model = (trained_model) => {
 	//save all model in database
 };
 */
+
+
 const load_models = () => {
 	//get all models from database.
 };
 
-const authenticate_user = (client_base64_image) => {
+/** @function authenticate_client */
+/**
+ * Train the model with images and a classification label.
+ * @param {string} client_base64_image - The client's image in base64 format.
+ * @returns {string} -  client ID if there is a match.
+ * @throws {NoMatchException} client is not in the database
+ */
+const authenticate_client = (client_base64_image) => {
 	const required_accuracy = 0.85;
 	var prediction_accuracy = 0;
 	var client_id = '';
@@ -52,7 +68,7 @@ const authenticate_user = (client_base64_image) => {
 };
 
 module.exports = {
-	authenticate_user,
+	authenticate_client,
 	train_model//,
 	//save_model
 }
