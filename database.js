@@ -1,13 +1,15 @@
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://admin:admin123@facialrecdataset-umcor.mongodb.net/facialrecdataset?ssl=true&authSource=admin";
 const client = new MongoClient(uri, { useNewUrlParser: true });
+const faceRec = require('face-recog.js');
 //var exports = module.exports = {};
 
 exports.Insert = function(client_id, images_json){
 	client.connect(err => {
 		if(err) throw err;
 		const collection = client.db("FacialRecDataSet").collection("FacialRecTable");
-		var obj = {clientID : client_id, photos : images_json, activated : true};
+		const model = faceRec.train_model(client_id, images_json);
+		var obj = {clientID : client_id, photos : images_json, trained_model : model, activated : true};
 		collection.insertOne(obj, function(error, result){
 			if(error) throw error;
 			//console.log("Inserted");
