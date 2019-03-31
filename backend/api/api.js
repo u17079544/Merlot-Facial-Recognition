@@ -4,6 +4,7 @@
 ////const faceRec = require('face-recog.js');
 ////var authenticate = require('./Authenticate.js')
 ////var database = require('./database.js')
+var logging = require('../Logging/log.js');
 
 const bodyParser = require('body-parser');
 const app = require('../../app.js').app;
@@ -27,13 +28,15 @@ exports.authHandler = function(req, res) {
 				*/
 				//return clientid or error
 				var obj = {clientid: 1234};
+				logging.add('Authenticate',new Date(Date.now()),obj.clientid);
 				res.send(JSON.stringify(obj));
 			break;
 			case "update":
 				//will pass req.body.clientid
 				//will pass req.body.images (images is a JSON array)
 				//run register function
-				var obj = {success: true};
+				var obj = {success: true};				
+				logging.add('Update',new Date(Date.now()),req.body.clientid);
 				res.send(JSON.stringify(obj));
 			break;
 			case "log":
@@ -41,6 +44,7 @@ exports.authHandler = function(req, res) {
 				//will pass req.body.end
 				//run log function
 				//return array of date and clientid as json object
+				var data = logging.get(new Date(Date.parse(req.body.start)),new Date(Date.parse(req.body.start)));
 				var obj =	{
 								log: [
 									{
