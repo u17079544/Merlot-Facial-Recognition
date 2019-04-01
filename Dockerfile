@@ -1,6 +1,7 @@
 FROM heroku/heroku:16
 
-RUN apt-get install -y npm
+RUN curl -sL https://deb.nodesource.com/setup_11.x | -E bash - \
+	&& apt-get install -y nodejs 
 
 COPY package.json package.json  
 RUN npm install
