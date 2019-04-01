@@ -1,6 +1,6 @@
 FROM heroku/heroku:16
 
-RUN curl -sL https://deb.nodesource.com/setup_11.x | -E bash - \
+RUN curl -sL https://deb.nodesource.com/setup_11.x | bash - \
 	&& apt-get install -y nodejs 
 
 COPY package.json package.json  
