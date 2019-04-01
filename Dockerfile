@@ -1,4 +1,4 @@
-FROM heroku/heroku 
+FROM heroku/heroku:16
 
 COPY package.json package.json  
 RUN npm install
