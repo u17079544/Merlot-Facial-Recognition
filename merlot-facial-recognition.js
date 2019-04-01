@@ -8,7 +8,7 @@ const path = merlotfr.path;
 const http = require("http");
 
 const api = require('./backend/api/api.js');
-const database = require('./backend/database/main.js')
+const database = require('./backend/database/database.js')
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.set('views', path.join(__dirname, 'views'))
