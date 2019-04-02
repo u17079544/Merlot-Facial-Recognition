@@ -13,7 +13,7 @@ const database = require('./backend/database/database.js')
 app.use(express.static(path.join(__dirname, 'public')))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
-app.listen(port, () => console.log(`listening on ${ port }`))
+app.listen(port, "0.0.0.0", () => console.log(`listening on ${ port }`))
 
 // Handle requests.
 // API requests
