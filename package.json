@@ -2,9 +2,6 @@
   "name": "facial_recognition_database",
   "version": "0.0.1",
   "description": "A sample Node.js app using Express 4",
-  "engines": {
-    "node": "10.x"
-  },
   "main": "index.js",
   "scripts": {
     "start": "node merlot-facial-recognition.js",
