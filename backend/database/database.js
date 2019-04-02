@@ -21,7 +21,7 @@ exports.Insert = function(client_id, images_json){
 };
 
 //The Delete function will just deactivate a client based on the client_id provided
-exports.Delete = function(client_id){
+exports.Delete = function(client_id, callback){
 	client.connect(err => {
 		if(err) throw err;
 		var db = client.db("FacialRecDataSet");
@@ -40,7 +40,7 @@ exports.Update = function(){
 
 };
 
-exports.Get = function(){
+exports.Callback = function(){
 	client.connect(err => {
 		if(err) throw err;
 		var db = client.db("FacialRecDataSet");
@@ -51,4 +51,8 @@ exports.Get = function(){
 		db.close();
 		client.close();
 	});
+};
+
+exports.Get = function(callback){
+	callback();
 };
