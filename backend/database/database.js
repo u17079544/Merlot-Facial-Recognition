@@ -40,19 +40,15 @@ exports.Update = function(){
 
 };
 
-exports.Callback = function(){
+exports.Get = function(callback){
 	client.connect(err => {
 		if(err) throw err;
 		var db = client.db("FacialRecDataSet");
 		db.collection("FacialRecTable").find({}).toArray(function(error, result){
 			if(error) throw error;
-			return result;	
+			callback(result);	
 		});
 		db.close();
 		client.close();
 	});
-};
-
-exports.Get = function(callback){
-	callback();
 };
