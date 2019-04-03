@@ -1,9 +1,11 @@
 //const express = require('express');
 //const app = express();
+var http = require("http");
 
-////const faceRec = require('face-recog.js');
+var faceRec = require('face-recog.js');
 ////var authenticate = require('./Authenticate.js')
-////var database = require('./database.js')
+var database = require('./database/database.js')
+var logging = require('../Logging/log.js');
 
 const bodyParser = require('body-parser');
 const app = require('../../app.js').app;
@@ -17,42 +19,29 @@ exports.authHandler = function(req, res) {
 			case "authenticate":
 				//will pass req.body.image
 				//run authenticate function
-				/*
+				var start = new Date();
 				var obj = {};
 				try {
-					obj.clientid = faceRec.authenticate_user(req.body.image); 
+					obj.clientid = faceRec.authenticate_client(req.body.image); 					
+					obj.Success = true;
 				} catch(msg) {
-					obj.error = msg;
+					obj.clientid = -1
+					obj.Success = false;
 				}
-				*/
 				//return clientid or error
-				var obj = {clientid: 1234};
+				var end = new Date() - start;
+				logging.add('Authenticate',new Date(Date.now()),obj.clientid,obj.Success,end);
 				res.send(JSON.stringify(obj));
 			break;
 			case "update":
 				//will pass req.body.clientid
 				//will pass req.body.images (images is a JSON array)
-				//run register function
-				var obj = {success: true};
-				res.send(JSON.stringify(obj));
-			break;
-			case "log":
-				//will pass req.body.start
-				//will pass req.body.end
-				//run log function
-				//return array of date and clientid as json object
-				var obj =	{
-								log: [
-									{
-										date: "2014-01-01T23:28:56.782Z",
-										clientid: 1234
-									},
-									{
-										date: "2014-01-01T23:28:56.782Z",
-										clientid: 2345
-									}
-								]
-							};
+				//run register function				
+				var start = new Date();
+				database.update(req.body.images);
+				var obj = {success: true};				
+				var end = new Date() - start;
+				logging.add('Update',new Date(Date.now()),req.body.clientid,true,end);
 				res.send(JSON.stringify(obj));
 			break;
 			default:
@@ -63,6 +52,31 @@ exports.authHandler = function(req, res) {
 	else {
 		res.send("incorrect format");
 	}
+}
+
+exports.log = function(date) {
+	dateNew = new Date(Date.now());
+	var data = logging.get(date,dateNew);
+	var postData = querystring.stringify({
+			log_set: {
+				logs: data,
+				system: "face"
+			}
+		})
+	var options = {
+	host: 'https://still-oasis-34724.herokuapp.com',
+	port: 80,
+	path: '/uploadLog',
+	method: 'POST',
+	headers: {
+	 'Content-Type': 'application/x-www-form-urlencoded',
+	 'Content-Length': Buffer.byteLength(postData)
+	}
+	
+	var req = http.request(options, function (res) {});
+	req.write(postData);
+	req.end;
+	setTimeout(log(dateNew));
 }
 
 // app.listen(3000);
