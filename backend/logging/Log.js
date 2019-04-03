@@ -1,15 +1,17 @@
 const fs = require('fs');
 
-let add = function (t,d,i)//type,date,id
+let add = function (t,da,i,s,du)//type,date,id,success,duration
 {	
-	if(typeof t === 'string' && d instanceof Date)
+	if(typeof t === 'string' && da instanceof Date && typeof s === 'boolean' && typeof du === 'number')
 	{
 		var json = fs.readFileSync('logs.json');
 		var log = JSON.parse(json)
 		var logEntry = {
-						type: t,
-						date: d,
-						clientID: i
+						clientID: i,
+						duration: du,
+						success: s,						
+						timestamp: da,
+						type: t
 				   };
 		log.push(logEntry)
 		
@@ -31,10 +33,10 @@ let get = function (start,end)
 		var data = [];
 		for(var i=0;i<log.length;i++)
 		{
-			var compareDate = Date.parse(log[i].date);
+			var compareDate = Date.parse(log[i].timestamp);
 			if((compareDate-start)>=0 && (compareDate-end)<=0)
 			{
-				log[i].date=new Date(compareDate);
+				log[i].timestamp=new Date(compareDate);
 				data.push(log[i]);			
 			}
 		}
