@@ -1,5 +1,6 @@
 //const express = require('express');
 //const app = express();
+var http = require("http");
 
 ////const faceRec = require('face-recog.js');
 ////var authenticate = require('./Authenticate.js')
@@ -39,26 +40,6 @@ exports.authHandler = function(req, res) {
 				logging.add('Update',new Date(Date.now()),req.body.clientid);
 				res.send(JSON.stringify(obj));
 			break;
-			case "log":
-				//will pass req.body.start
-				//will pass req.body.end
-				//run log function
-				//return array of date and clientid as json object
-				var data = logging.get(new Date(Date.parse(req.body.start)),new Date(Date.parse(req.body.start)));
-				var obj =	{
-								log: [
-									{
-										date: "2014-01-01T23:28:56.782Z",
-										clientid: 1234
-									},
-									{
-										date: "2014-01-01T23:28:56.782Z",
-										clientid: 2345
-									}
-								]
-							};
-				res.send(JSON.stringify(obj));
-			break;
 			default:
 				res.send("incorrect format");
 			break;
@@ -67,6 +48,31 @@ exports.authHandler = function(req, res) {
 	else {
 		res.send("incorrect format");
 	}
+}
+
+exports.log = function(date) {
+	dateNew = new Date(Date.now());
+	var data = logging.get(date,dateNew);
+	var postData = querystring.stringify({
+			log_set: {
+				logs: data,
+				system: "face"
+			}
+		})
+	var options = {
+	host: 'https://still-oasis-34724.herokuapp.com',
+	port: 80,
+	path: '/uploadLog',
+	method: 'POST',
+	headers: {
+	 'Content-Type': 'application/x-www-form-urlencoded',
+	 'Content-Length': Buffer.byteLength(postData)
+	}
+	
+	var req = http.request(options, function (res) {});
+	req.write(postData);
+	req.end;
+	setTimeout(log(dateNew));
 }
 
 // app.listen(3000);
