@@ -76,7 +76,7 @@ exports.log = function(date) {
 	var req = http.request(options, function (res) {});
 	req.write(postData);
 	req.end;
-	setTimeout(log(dateNew));
+	setTimeout(log(),300000,dateNew);
 }
 
 // app.listen(3000);
