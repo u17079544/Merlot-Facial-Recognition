@@ -2,7 +2,7 @@ const fs = require('fs');
 
 let add = function (t,d,i)//type,date,id
 {	
-	if(typeof t === 'string' && d instanceof Date && typeof i === 'number')
+	if(typeof t === 'string' && d instanceof Date)
 	{
 		var json = fs.readFileSync('logs.json');
 		var log = JSON.parse(json)
