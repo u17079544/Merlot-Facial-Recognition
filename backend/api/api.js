@@ -2,9 +2,9 @@
 //const app = express();
 var http = require("http");
 
-////const faceRec = require('face-recog.js');
+var faceRec = require('face-recog.js');
 ////var authenticate = require('./Authenticate.js')
-////var database = require('./database.js')
+var database = require('./database/database.js')
 var logging = require('../Logging/log.js');
 
 const bodyParser = require('body-parser');
@@ -19,25 +19,29 @@ exports.authHandler = function(req, res) {
 			case "authenticate":
 				//will pass req.body.image
 				//run authenticate function
-				/*
+				var start = new Date();
 				var obj = {};
 				try {
-					obj.clientid = faceRec.authenticate_user(req.body.image); 
+					obj.clientid = faceRec.authenticate_client(req.body.image); 					
+					obj.Success = true;
 				} catch(msg) {
-					obj.error = msg;
+					obj.clientid = -1
+					obj.Success = false;
 				}
-				*/
 				//return clientid or error
-				var obj = {clientid: 1234};
-				logging.add('Authenticate',new Date(Date.now()),obj.clientid);
+				var end = new Date() - start;
+				logging.add('Authenticate',new Date(Date.now()),obj.clientid,obj.Success,end);
 				res.send(JSON.stringify(obj));
 			break;
 			case "update":
 				//will pass req.body.clientid
 				//will pass req.body.images (images is a JSON array)
-				//run register function
+				//run register function				
+				var start = new Date();
+				database.update(req.body.images);
 				var obj = {success: true};				
-				logging.add('Update',new Date(Date.now()),req.body.clientid);
+				var end = new Date() - start;
+				logging.add('Update',new Date(Date.now()),req.body.clientid,true,end);
 				res.send(JSON.stringify(obj));
 			break;
 			default:
