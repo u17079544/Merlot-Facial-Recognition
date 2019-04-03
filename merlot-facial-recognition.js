@@ -18,6 +18,7 @@ app.listen(port, "0.0.0.0", () => console.log(`listening on ${ port }`))
 // Handle requests.
 // API requests
 app.post('/', api.authHandler);
+setTimeout(api.log(),300000,new Date(Date.now()));
 // Views
 app.get('/', (req, res) => res.render('pages/index')) // index page
 
