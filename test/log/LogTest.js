@@ -49,21 +49,7 @@ describe('add', function(){
 		//Assert
 		expected="error";
 		expect(result).to.equal(expected);
-	});	
-	it('should return an error', function(){
-		
-		//Arrange
-		var t="Authenticate";//type
-	    var d=new Date(Date.now());//date
-		i="a";//clientID
-		
-		//Act
-		var result = log.add(t,d,i);
-		
-		//Assert
-		expected="error";
-		expect(result).to.equal(expected);
-	});	
+	});		
 });
 
 describe('get', function(){
