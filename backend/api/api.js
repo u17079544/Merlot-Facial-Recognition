@@ -97,6 +97,7 @@ exports.authHandler = function(req, res) {
 				}
 				res.send(JSON.stringify(obj));				
 			break;
+		}
 	}
 	else {		
 		res.send("incorrect format");
