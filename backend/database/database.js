@@ -11,7 +11,7 @@ exports.Insert = function(client_id, images_json){
 	client.connect((err,db) => {
 		if(err) throw err;
 		const collection = client.db("FacialRecDataSet").collection("FacialRecTable");
-		collection.findOne({clientID : client_id}, function(err, doc) {
+		collection.findOne({clientID : client_id}).then( (value) => {
 			if (doc) {
 				console.log(client_id + " already exists in database");
 				return false;
@@ -31,7 +31,7 @@ exports.Insert = function(client_id, images_json){
 				// client.close();
 				return true;
 			}
-		});
+		})
 	});
 };
 
