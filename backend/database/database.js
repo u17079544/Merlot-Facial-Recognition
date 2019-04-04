@@ -11,21 +11,28 @@ exports.Insert = function(client_id, images_json){
 	client.connect((err,db) => {
 		if(err) throw err;
 		const collection = client.db("FacialRecDataSet").collection("FacialRecTable");
-		// const model = faceRec.train_model(client_id, images_json);
-		// var obj = {clientID : client_id, photos : images_json, trained_model : model, activated : true};
-		var obj = {clientID : client_id, photos : images_json, activated : true};
-		collection.insertOne(obj, function(error, result){
-			if(error) {
-				throw error;
+		collection.findOne({clientID : client_id}, function(err, doc) {
+			if (doc) {
+				console.log(client_id + " already exists in database");
+				return false;
 			} else {
-				console.log(client_id + " inserted");
-				// return client_id;
+				// const model = faceRec.train_model(client_id, images_json);
+				// var obj = {clientID : client_id, photos : images_json, trained_model : model, activated : true};
+				var obj = {clientID : client_id, photos : images_json, activated : true};
+				collection.insertOne(obj, function(error, result) {
+					if(error) {
+						throw error;
+					} else {
+						console.log(client_id + " inserted");
+						// return client_id;
+					}
+					db.close();
+				});
+				// client.close();
+				return true;
 			}
-			db.close();
 		});
-		// client.close();
 	});
-	return true;
 };
 
 //The Delete function will just deactivate a client based on the client_id provided
