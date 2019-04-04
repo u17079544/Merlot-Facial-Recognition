@@ -8,22 +8,22 @@
     "test": "mocha test -exit"
   },
   "dependencies": {
+    "base64-img": "^1.0.4",
     "body-parser": "^1.18.3",
     "cassandra-driver": "^4.0.0",
-    "dlib": "0.0.97",
+    "cors": "^2.8.5",
+    "dlib-build": "^0.1.1",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-cassandra": "^2.3.0",
     "face-recognition": "^0.9.4",
     "image-to-base64": "^2.0.1",
+    "jimp": "^0.6.1",
     "mongodb": "^3.2.2",
     "mongoose": "^5.4.19",
     "mysql": "^2.16.0",
     "query-string": "^6.4.2",
-    "sleep": "^6.0.0",
-    "jimp": "^0.6.1",
-    "cors": "^2.8.5",
-    "base64-img": "^1.0.4"
+    "sleep": "^6.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
