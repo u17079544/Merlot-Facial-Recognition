@@ -21,8 +21,8 @@ exports.authHandler = function(req, res) {
 				//will pass req.body.image
 				//run authenticate function
 				var start = new Date();
-				/*var obj = {};
-				try {
+				var obj = {clientid: "", Success: ""};
+				/*try {
 					obj.clientid = faceRec.authenticate_client(req.body.image); 					
 					obj.Success = true;
 				} catch(msg) {
