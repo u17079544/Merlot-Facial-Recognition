@@ -4,7 +4,7 @@ let add = function (t,da,i,s,du)//type,date,id,success,duration
 {	
 	if(typeof t === 'string' && da instanceof Date && typeof s === 'boolean' && typeof du === 'number')
 	{
-		var json = fs.readFileSync('logs.json');
+		var json = fs.readFileSync(__dirname + '/logs.json');
 		var log = JSON.parse(json)
 		var logEntry = {
 						clientID: i,
@@ -16,7 +16,7 @@ let add = function (t,da,i,s,du)//type,date,id,success,duration
 		log.push(logEntry)
 		
 		var	data = JSON.stringify(log);
-		fs.writeFileSync('logs.json',data);		
+		fs.writeFileSync(__dirname + '/logs.json',data);		
 	}
 	else
 	{
@@ -28,7 +28,7 @@ let get = function (start,end)
 {
 	if(start instanceof Date && end instanceof Date)
 	{
-		var json = fs.readFileSync('logs.json');
+		var json = fs.readFileSync(__dirname + '/logs.json');
 		var log = JSON.parse(json);
 		var data = [];
 		for(var i=0;i<log.length;i++)
