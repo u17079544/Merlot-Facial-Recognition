@@ -162,7 +162,7 @@
 
 		function sendRegister() {
 			var url = 'http://127.0.0.1:3000/';
-			json_r_request.type = "authenticate";
+			json_r_request.type = "register";
   			json_r_request.client_id = document.getElementsByName('client_id')[0].value;
   			json_r_request.images = base64List;
 			postAjax(url, json_r_request, (data) => { 
