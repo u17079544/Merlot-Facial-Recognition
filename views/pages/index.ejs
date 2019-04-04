@@ -2,6 +2,66 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
+  <style type="text/css">
+		body {
+			margin: 0px;
+			padding: 0xp;
+			font-family: sans-serif;
+			background-color: whitesmoke;
+		}
+		.preview {
+			width: 70vw;
+			height: 150px;
+			overflow-y: scroll;
+		}
+		#register {
+			padding: 10px;
+			width: 96vw;
+			height: 80vh;
+			border-bottom: 3px solid #0b999a;
+		}
+		#authenticate {
+			padding: 10px;
+			width: 96vw;
+			height: 70vh;	
+		}
+		.fnb-navbar {
+			width: 98vw;
+			height: 60px;
+			background-color: white;
+			box-shadow: 0 8px 6px -6px grey;
+		}
+		.fnb-image {
+			padding-left: 10px;
+			width: 100px;
+			height: 55px;
+			float: left;
+		}
+		.fnb-head {
+			/*width: 100px;*/
+			height: 55px;
+			float: left;
+			padding-left: 10px;	
+			padding-top: 10px;
+			color: #0b999a;
+		}
+		.fnb-head h1 {
+			margin: 0px;
+		}
+		.result-box {
+			background-color: white;
+			border-radius: 0.3em;
+			width: 50vw;
+			height: 100px;
+			border: 1px solid lightgrey;
+			overflow-y: scroll;
+			word-wrap: break-word;
+			padding: 5px;
+		}
+		.server-pos {
+			padding: 20px;
+			float: right;
+		}
 </head>
 
 <body>
@@ -15,6 +75,13 @@
 			<img src="https://seeklogo.com/images/F/fnb-logo-E570AEBCE1-seeklogo.com.png" height="50px" width="100px">
 		</div>
 		<div class="fnb-head"><h1>Facial Recognition System</h1></div>	
+		<div class="server-pos">
+			<label for="server">Server:</label>
+			<select id="server" name="server">
+				<option value="http://127.0.0.1:3000">http://127.0.0.1:3000</option>
+				<option value="htpp://heroku.com">htpp://heroku.com</option>
+			</select>
+		</div>
 	</div>
 	
 	<div id="register">
@@ -152,7 +219,9 @@
 		}
 
 		function sendAuthentication() {
-			var url = 'http://127.0.0.1:3000/';
+			var e = document.getElementById("server");
+			var strUrl = e.options[e.selectedIndex].value;
+			var url = strUrl;
 			json_a_request.type = "authenticate";
   			json_a_request.image = base64Image;
 			postAjax(url, json_a_request, (data) => { 
@@ -161,7 +230,9 @@
 		}
 
 		function sendRegister() {
-			var url = 'http://127.0.0.1:3000/';
+			var e = document.getElementById("server");
+			var strUrl = e.options[e.selectedIndex].value;
+			var url = strUrl;
 			json_r_request.type = "register";
   			json_r_request.client_id = document.getElementsByName('client_id')[0].value;
   			json_r_request.images = base64List;
