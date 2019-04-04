@@ -32,7 +32,20 @@ const save_model = (trained_model) => {
 
 
 const load_models = () => {
+	model_activation = {};
+	model_activation.model = null;
+	model_activation.activated = false;
+	list_model_activation = [];
 	//get all models from database.
+	db.Get((rows) => {
+		rows.forEach((row) => {
+			model_activation.model = row.trained_model;
+			model_activation.activated = row.activated;
+			list_model_activation.push(model_activation);
+		});		
+	});
+	
+	return list_model_activation;
 };
 
 /** @function authenticate_client */
@@ -52,14 +65,16 @@ const authenticate_client = (client_base64_image) => {
 	
 
 	for (var i=0; i < face_models.length; i++) {
-		recognizer.load(face_models[i]);
-		face_prediction = recognizer.predict(client_face);
+		if (face_models[i].activated) {
+			recognizer.load(face_models[i].model);
+			face_prediction = recognizer.predict(client_face);
 
-		client_id = face_prediction[0].className;
-		prediction_accuracy = 1 - face_prediction[0].distance;
+			client_id = face_prediction[0].className;
+			prediction_accuracy = 1 - face_prediction[0].distance;
 
-		if (prediction_accuracy >= required_accuracy)
-			return client_id;
+			if (prediction_accuracy >= required_accuracy)
+				return client_id;
+		}
 	}
 
 	//log that authenticaion failed if such info is logged
