@@ -8,7 +8,8 @@ RUN apt-get install -y libx11-dev libpng-dev
 COPY package.json package.json  
 RUN npm install
 
-RUN apt-get install -y libdlib
+RUN apt-get install -y libdlib-dev
+
 # Add your source files
 COPY . .  
 CMD ["npm","start"]  
