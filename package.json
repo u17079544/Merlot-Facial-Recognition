@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node merlot-facial-recognition.js",
-    "test": "node test.js"
+    "test": "mocha test -exit"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
