@@ -10,6 +10,165 @@
 
 	<h1 style='text-align: center'>Merlot Facial Recognition Team</h1>
 	<h2 style='text-align: center'>Group 11</h2>
+	<div class="fnb-navbar">
+		<div class="fnb-image">
+			<img src="https://seeklogo.com/images/F/fnb-logo-E570AEBCE1-seeklogo.com.png" height="50px" width="100px">
+		</div>
+		<div class="fnb-head"><h1>Facial Recognition System</h1></div>	
+	</div>
+	
+	<div id="register">
+		<h2>Register User</h2>
+		<form>
+			<label for="client_id">Client ID:</label>
+			<input type="text" name="client_id"><br>
+			<label for="images">Upload Images:</label>
+			<input type="file" name="images" onchange="previewFiles()" multiple>
+			<div class="preview" id="preview"></div>
+			<input type="button" name="Upload" value="Upload" onclick="sendRegister()">
+		</form>
+		<h3>Result</h3>
+		<div class="result-box" id="r_result">
+			
+		</div>
+	</div>
+	<div id="authenticate">
+		<h2>Authenticate User</h2>
+		<form>
+			<label for="images">Upload Image:</label>
+			<input type="file" name="images" onchange="previewFile()">
+			<div class="preview" id="preview1"></div>
+			<input type="button" name="Upload" value="Upload" onclick="sendAuthentication()">
+		</form>
+		<h3>Result</h3>
+		<div class="result-box" id="a_result">
+			
+		</div>
+	</div>
 
+	<script type="text/javascript">
+		//<!-- script for uploading -->
+		var json_r_request = {};
+		var base64List = [];
+		var json_a_request = {};
+		var base64Image = '';
+		
+		function previewFiles() {
+
+  			var preview = document.querySelector('#preview');
+  			var files   = document.querySelector('input[type=file]').files;
+  			
+  			//var json_request = {};
+
+  			function readAndPreview(file) {
+
+    			// Make sure `file.name` matches our extensions criteria
+    			if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
+      				var reader = new FileReader();
+
+      				reader.addEventListener("load", function () {
+        				var image = new Image();
+        				var strImage = '';
+        				image.height = 100;
+        				image.title = file.name;
+        				image.src = this.result;
+        				strImage += this.result;
+        				base64List.push(strImage);
+        				preview.appendChild( image );
+      				}, false);
+
+      				reader.readAsDataURL(file);
+    			}
+
+  			}
+
+  			if (files) {
+    			[].forEach.call(files, readAndPreview);
+  			}	
+
+  			
+		}
+
+		// function showRegister() {
+		// 	json_r_request.type = "register";
+  // 			json_r_request.client_id = document.getElementsByName('client_id')[0].value;
+  // 			json_r_request.images = base64List;
+  // 			//send via ajax
+  // 			document.getElementById('r_result').innerHTML = JSON.stringify(json_r_request);
+		// }
+
+		function previewFile() {
+  			var preview = document.querySelector('#preview1');
+ 			var file    = document.querySelectorAll('input[type=file]')[1].files[0];
+ 			//var json_request = {};
+
+  			function readAndPreview(file) {
+
+    			// Make sure `file.name` matches our extensions criteria
+    			if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
+      				var reader = new FileReader();
+
+      				reader.addEventListener("load", function () {
+        				var image = new Image();
+        				image.height = 100;
+        				image.title = file.name;
+        				image.src = this.result;
+        				base64Image = this.result;
+        				preview.appendChild( image );
+      				}, false);
+
+      				reader.readAsDataURL(file);
+    			}
+
+  			}
+  			
+  			//send via ajax
+  			readAndPreview(file);
+		}	
+
+		// function showAuthentication() {
+		// 	json_a_request.type = "authenticate";
+  // 			json_a_request.image = base64Image;
+  // 			document.getElementById('a_result').innerHTML = JSON.stringify(json_a_request);
+		// }	
+
+
+		function postAjax(url, data, success) {
+    		var params = typeof data == 'string' ? data : Object.keys(data).map(
+            function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
+        	).join('&');
+
+    		var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+    		xhr.open('POST', url);
+    		xhr.onreadystatechange = function() {
+        		if (xhr.readyState>3 && xhr.status==200) { 
+        			success(xhr.responseText); 
+        		}
+    		};
+    		xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+   			xhr.send(params);
+    		return xhr;
+		}
+
+		function sendAuthentication() {
+			var url = 'http://127.0.0.1:3000/';
+			json_a_request.type = "authenticate";
+  			json_a_request.image = base64Image;
+			postAjax(url, json_a_request, (data) => { 
+				document.getElementById('a_result').innerHTML = data; 
+			});	
+		}
+
+		function sendRegister() {
+			var url = 'http://127.0.0.1:3000/';
+			json_r_request.type = "authenticate";
+  			json_r_request.client_id = document.getElementsByName('client_id')[0].value;
+  			json_r_request.images = base64List;
+			postAjax(url, json_r_request, (data) => { 
+				document.getElementById('a_result').innerHTML = data; 
+			});
+		}
+	</script>
 </body>
 </html>
