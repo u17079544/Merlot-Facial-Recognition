@@ -2,12 +2,13 @@
 //const app = express();
 var http = require("http");
 
-var faceRec = require('face-recog.js');
+var faceRec = require('../facial-recognition/face-recog.js');
 ////var authenticate = require('./Authenticate.js')
-var database = require('./database/database.js')
-var logging = require('../Logging/log.js');
+var database = require('../database/database.js')
+var logging = require('../logging/Log.js');
 
 const bodyParser = require('body-parser');
+const querystring = require('query-string');
 const app = require('../../app.js').app;
 
 app.use(bodyParser.urlencoded({limit: '50mb', extended:false}));
@@ -72,11 +73,12 @@ exports.log = function(date) {
 	 'Content-Type': 'application/x-www-form-urlencoded',
 	 'Content-Length': Buffer.byteLength(postData)
 	}
+	};
 	
 	var req = http.request(options, function (res) {});
 	req.write(postData);
 	req.end;
-	setTimeout(log(),300000,dateNew);
+	// setTimeout(logging.log,300000,dateNew);
 }
 
 // app.listen(3000);
