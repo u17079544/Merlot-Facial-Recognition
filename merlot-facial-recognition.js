@@ -13,7 +13,7 @@ const database = require('./backend/database/database.js')
 app.use(express.static(path.join(__dirname, 'public')))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
-app.listen(port, "0.0.0.0", () => console.log(`listening on ${ port }`))
+app.listen(port, () => console.log(`listening on ${ port }`))
 
 // Handle requests.
 // API requests
@@ -23,4 +23,4 @@ setTimeout(api.log(),300000,new Date(Date.now()));
 app.get('/', (req, res) => res.render('pages/index')) // index page
 
 // Database
-http.createServer(database.run).listen(5001);
+// http.createServer(database.run).listen(5001);
