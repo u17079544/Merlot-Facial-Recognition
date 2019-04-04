@@ -21,13 +21,32 @@ exports.authHandler = function(req, res) {
 				//will pass req.body.image
 				//run authenticate function
 				var start = new Date();
-				var obj = {};
+				/*var obj = {};
 				try {
 					obj.clientid = faceRec.authenticate_client(req.body.image); 					
 					obj.Success = true;
 				} catch(msg) {
 					obj.clientid = -1
 					obj.Success = false;
+				}*/
+				var rand = Math.floor(Math.random() * Math.floor(3));
+				switch(rand)
+				{
+					case 0:
+						obj.clientid = 1234;
+						obj.Success = true;
+					break;
+					case 1:
+						obj.clientid = 5678;
+						obj.Success = true;
+					break;
+					case 2:
+						obj.clientid = "No match found.";
+						obj.Success = false;
+					case 3:
+						obj.clientid = "No match found.";
+						obj.Success = false;
+					break;
 				}
 				//return clientid or error
 				var end = new Date() - start;
@@ -50,7 +69,36 @@ exports.authHandler = function(req, res) {
 			break;
 		}
 	}
-	else {
+	else if(req.body.hasOwnProperty("Message")){
+		switch(req.body.Message) {
+			case "New client created":
+				var check = database.Insert(req.body.clientID);
+				var obj;
+				if(typeof check==='boolean'&&check==true)
+				{
+					obj = {status:"success"};
+				}
+				else
+				{
+					obj = {status:"failure"};
+				}
+				res.send(JSON.stringify(obj));				
+			break;
+			case "Client deactivated":
+				var check = database.Delete(req.body.clientID);
+				var obj;
+				if(typeof check==='boolean'&&check==true)
+				{
+					obj = {status:"success"};
+				}
+				else
+				{
+					obj = {status:"failure"};
+				}
+				res.send(JSON.stringify(obj));				
+			break;
+	}
+	else {		
 		res.send("incorrect format");
 	}
 }
