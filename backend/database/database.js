@@ -1,6 +1,7 @@
-const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://admin:admin123@facialrecdataset-umcor.mongodb.net/facialrecdataset?ssl=true&authSource=admin";
-const client = new MongoClient(uri, { useNewUrlParser: true });
+// const MongoClient = require('mongodb').MongoClient;
+// const uri = "mongodb+srv://admin:admin123@facialrecdataset-umcor.mongodb.net/facialrecdataset?ssl=true&authSource=admin";
+// const client = new MongoClient(uri, { useNewUrlParser: true });
+const client = require('../../app.js').client;
 const faceRec = require('../facial-recognition/face-recog.js');
 
 
@@ -23,9 +24,9 @@ exports.Insert = function(client_id, images_json){
 					collection.insertOne(obj, function(error, result) {
 						if(err) reject(err);
 						else console.log(client_id + " inserted");
-						// db.close();
+						db.close();
 					});
-					client.close();
+					// client.close();
 					resolve(true);
 				}
 			}, (err) => {
@@ -51,9 +52,9 @@ exports.Activate = function(client_id){
 					collection.insertOne(obj, function(error, result) {
 						if(err) reject(err);
 						else console.log(client_id + " inserted");
-						// db.close();
+						db.close();
 					});
-					client.close();
+					// client.close();
 					resolve(true);
 				}
 			}, (err) => {
@@ -83,9 +84,9 @@ exports.Delete = function(client_id){
 						} else {
 							console.log(client_id + " deactivated");
 						}
-						// db.close();
+						db.close();
 					});
-					client.close();
+					// client.close();
 					resolve(true);
 				}
 			}, (err) => {
@@ -112,15 +113,11 @@ exports.Update = function(client_id, images_json){
 					// var newvalues = { $set: {photos : images_json, trained_model : model} };
 					var newvalues = { $set: {photos : images_json} };
 					collection.updateOne(obj, newvalues, function(error, result){
-						if(error) {
-							throw error;
-						} else {
-							console.log(client_id + " updated");
-							// return client_id;
-						}
-						// db.close();
+						if(error) reject(error)
+						else console.log(client_id + " updated");
+						db.close();
 					});
-					client.close();
+					// client.close();
 					resolve(true);
 				}
 			}, (err) => {

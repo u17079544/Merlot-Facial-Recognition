@@ -1,6 +1,7 @@
 //const express = require('express');
 //const app = express();
 var http = require("http");
+const sleep = require('sleep').sleep;
 
 var faceRec = require('../facial-recognition/face-recog.js');
 ////var authenticate = require('./Authenticate.js')
@@ -72,30 +73,38 @@ exports.authHandler = function(req, res) {
 	else if(req.body.hasOwnProperty("Message")){
 		switch(req.body.Message) {
 			case "New client created":
-				var check = database.Insert(req.body.clientID);
-				var obj;
-				if(typeof check==='boolean'&&check==true)
-				{
-					obj = {status:"success"};
-				}
-				else
-				{
-					obj = {status:"failure"};
-				}
-				res.send(JSON.stringify(obj));				
+				// database.Insert(Number(req.body.clientID)).then((check) =>{
+				// 	var obj;
+				// 	if(typeof check==='boolean'&&check==true)
+				// 	{
+				// 		obj = {status:"success"};
+				// 	}
+				// 	else
+				// 	{
+				// 		obj = {status:"failure"};
+				// 	}
+				// 	res.send(JSON.stringify(obj));				
+				// }, (err) => {
+				// 	console.log(err);
+				// });
+				sleep(1);
+				res.send(JSON.stringify({status:"success"}));				
 			break;
 			case "Client deactivated":
-				var check = database.Delete(req.body.clientID);
-				var obj;
-				if(typeof check==='boolean'&&check==true)
-				{
-					obj = {status:"success"};
-				}
-				else
-				{
-					obj = {status:"failure"};
-				}
-				res.send(JSON.stringify(obj));				
+				// var check = database.Delete(Number(req.body.clientID));
+				// var obj;
+				// if(typeof check==='boolean'&&check==true)
+				// {
+				// 	obj = {status:"success"};
+				// }
+				// else
+				// {
+				// 	obj = {status:"failure"};
+				// }
+				// res.send(JSON.stringify(obj));				
+				
+				sleep(1);
+				res.send(JSON.stringify({status:"success"}));				
 			break;
 		}
 	}
