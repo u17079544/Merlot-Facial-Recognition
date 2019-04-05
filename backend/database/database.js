@@ -24,7 +24,7 @@ exports.Insert = function(client_id, images_json){
 					collection.insertOne(obj, function(error, result) {
 						if(err) reject(err);
 						else console.log(client_id + " inserted");
-						db.close();
+						//db.close();
 					});
 					// client.close();
 					resolve(true);
@@ -52,7 +52,7 @@ exports.Activate = function(client_id){
 					collection.insertOne(obj, function(error, result) {
 						if(err) reject(err);
 						else console.log(client_id + " inserted");
-						db.close();
+						//db.close();
 					});
 					// client.close();
 					resolve(true);
@@ -84,7 +84,7 @@ exports.Delete = function(client_id){
 						} else {
 							console.log(client_id + " deactivated");
 						}
-						db.close();
+						//db.close();
 					});
 					// client.close();
 					resolve(true);
@@ -116,7 +116,7 @@ exports.Update = function(client_id, images_json){
 						collection.updateOne(obj, newvalues, function(error, result){
 							if(error) reject(error)
 							else console.log(client_id + " updated");
-							db.close();
+							//db.close();
 						});
 					// client.close();
 						resolve(true);	
