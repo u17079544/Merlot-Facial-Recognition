@@ -31,8 +31,8 @@ const authenticate_client = (client_base64_image, callback) => {
 			var prediction_accuracy = 0;
 			var client_id = '';
 			var face_prediction = null;
-			one_prediction.id = '';
-			one_prediction.accuracy = 0;
+			//one_prediction.id = '';
+			//one_prediction.accuracy = 0;
 			var match = false;
 			for (var i=0; i < model_list.length; i++) {
 				if (!model_list[i].activated) continue;
