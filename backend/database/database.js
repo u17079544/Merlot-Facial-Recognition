@@ -138,7 +138,7 @@ exports.Get = function(callback){
 			if(error) throw error;
 			callback(result);	
 		});
-		db.close();
+		// db.close();
 		client.close();
 	});
 };
