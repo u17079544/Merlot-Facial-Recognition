@@ -11,9 +11,11 @@ var logging = require('../logging/Log.js');
 const bodyParser = require('body-parser');
 const querystring = require('query-string');
 const app = require('../../app.js').app;
+var cors = require('cors');
 
 app.use(bodyParser.urlencoded({limit: '50mb', extended:false}));
 app.use(bodyParser.json({limit: '50mb'}));
+app.use(cors());
 
 exports.authHandler = function(req, res) {
 	if(req.body.hasOwnProperty("type")) {
