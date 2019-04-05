@@ -22,7 +22,7 @@ const validate = (client_image) => {
 
 const authenticate_client = (client_base64_image, callback) => {
 	if (!validate(client_base64_image)) {
-		callback({clientid: "No match found", Success: false});
+		callback({clientid: "Not base64 string", Success: false});
 	} else {
 	ip.process_image(client_base64_image, (client_face) => {
 		load_models((model_list) => {
