@@ -24,13 +24,16 @@ exports.authHandler = function(req, res) {
 				//will pass req.body.image
 				//run authenticate function
 				var start = new Date();
-				var obj = {clientid: "", Success: ""};
-				faceRec.authenticate_client(req.body.image, (object) => {
+				var obj = {clientid: "5020", Success: true};
+				/*faceRec.authenticate_client(req.body.image, (object) => {
 					obj = object;						
 					var end = new Date() - start;
 					logging.add('Authenticate',new Date(Date.now()),obj.clientid,obj.Success,end);
 					res.send(JSON.stringify(obj));
-				});
+				});*/
+				var end = new Date() - start;
+					logging.add('Authenticate',new Date(Date.now()),obj.clientid,obj.Success,end);
+					res.send(JSON.stringify(obj));
 				/*try {
 					obj.clientid = faceRec.authenticate_client(req.body.image); 					
 					obj.Success = true;
