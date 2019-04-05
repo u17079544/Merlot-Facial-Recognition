@@ -10,7 +10,20 @@ const load_models = (callback) => {
 	});
 };
 
+const validate = (client_image) => {
+	var matches = client_image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+	var image_info = {};
+
+    	if (matches.length === 3) {
+    		return true;
+    	} else 
+    		return false;
+};
+
 const authenticate_client = (client_base64_image, callback) => {
+	if (!validate(client_base64_image)) {
+		callback({clientid: "No match found", Success: false});
+	} else {
 	ip.process_image(client_base64_image, (client_face) => {
 		load_models((model_list) => {
 			const required_accuracy = 0.75;
@@ -40,6 +53,7 @@ const authenticate_client = (client_base64_image, callback) => {
 				callback({clientid: "No match found", Success: false});
 		});	
 	});
+	}
 };
 
 const train_model = (client_id, json_base64_images, callback) => {
