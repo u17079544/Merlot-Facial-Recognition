@@ -20,7 +20,7 @@ exports.Insert = function(client_id, images_json){
 				} else {
 					// const model = faceRec.train_model(client_id, images_json);
 					// var obj = {clientID : client_id, photos : images_json, trained_model : model, activated : true};
-					var obj = {clientID : client_id, photos : images_json, activated : true};
+					var obj = {clientID : client_id, photos : images_json, trained_model: null, activated : true};
 					collection.insertOne(obj, function(error, result) {
 						if(err) reject(err);
 						else console.log(client_id + " inserted");
@@ -111,14 +111,16 @@ exports.Update = function(client_id, images_json){
 					// const model = faceRec.train_model(client_id, images_json);
 					var obj = {clientID : client_id};
 					// var newvalues = { $set: {photos : images_json, trained_model : model} };
-					var newvalues = { $set: {photos : images_json} };
-					collection.updateOne(obj, newvalues, function(error, result){
-						if(error) reject(error)
-						else console.log(client_id + " updated");
-						db.close();
-					});
+					faceRec.train_model(client_id, images_json, (model) => {
+						var newvalues = { $set: {photos : images_json, trained_model: model} };
+						collection.updateOne(obj, newvalues, function(error, result){
+							if(error) reject(error)
+							else console.log(client_id + " updated");
+							db.close();
+						});
 					// client.close();
-					resolve(true);
+						resolve(true);	
+					});
 				}
 			}, (err) => {
 				reject(error);
