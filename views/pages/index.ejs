@@ -240,7 +240,7 @@
 			var e = document.getElementById("server");
 			var strUrl = e.options[e.selectedIndex].value;
 			var url = strUrl;
-			json_r_request.type = "register";
+			json_r_request.type = "update";
   			json_r_request.client_id = document.getElementsByName('client_id')[0].value;
   			json_r_request.images = base64List;
 			postAjax(url, json_r_request, (data) => { 
