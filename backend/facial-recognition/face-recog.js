@@ -11,9 +11,10 @@ const load_models = (callback) => {
 };
 
 const validate = (client_image) => {
+	var str = '' + client_image;
 	var matches = client_image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-	var image_info = {};
-
+	//var image_info = {};
+	
     	if (matches.length === 3) {
     		return true;
     	} else 
