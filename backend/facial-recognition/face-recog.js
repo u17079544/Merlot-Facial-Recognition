@@ -58,6 +58,14 @@ const authenticate_client = (client_base64_image, callback) => {
 };
 
 const train_model = (client_id, json_base64_images, callback) => {
+	if (!Array.isArray(json_base64_images)) {
+		return;
+	} else {
+		for (var i=0; i < json_base64_images.length; i++) {
+			if (!validate(json_base64_images[i])
+			    return;
+		}	
+	}
 	ip.process_images(json_base64_images, (client_faces) => {
 		recognizer.addFaces(client_faces, client_id);
 		callback(recognizer.serialize());
