@@ -13,7 +13,7 @@ const load_models = (callback) => {
 const authenticate_client = (client_base64_image, callback) => {
 	ip.process_image(client_base64_image, (client_face) => {
 		load_models((model_list) => {
-			const required_accuracy = 0.85;
+			const required_accuracy = 0.75;
 			var prediction_accuracy = 0;
 			var client_id = '';
 			var face_prediction = null;
@@ -31,13 +31,13 @@ const authenticate_client = (client_base64_image, callback) => {
 
 				if (prediction_accuracy >= required_accuracy) {
 					match = true;
-					callback(client_id);
+					callback({clientid: client_id, Success: true});
 					break;
 				}
 					
 			}
 			if (!match)
-				callback('No match');
+				callback({clientid: "No match found", Success: false});
 		});	
 	});
 };
