@@ -23,6 +23,12 @@ exports.authHandler = function(req, res) {
 				//run authenticate function
 				var start = new Date();
 				var obj = {clientid: "", Success: ""};
+				faceRec.authenticate_client(req.body.image, (object) => {
+					obj = object;						
+					var end = new Date() - start;
+					logging.add('Authenticate',new Date(Date.now()),obj.clientid,obj.Success,end);
+					res.send(JSON.stringify(obj));
+				});
 				/*try {
 					obj.clientid = faceRec.authenticate_client(req.body.image); 					
 					obj.Success = true;
@@ -30,7 +36,7 @@ exports.authHandler = function(req, res) {
 					obj.clientid = -1
 					obj.Success = false;
 				}*/
-				var rand = Math.floor(Math.random() * Math.floor(3));
+				/*var rand = Math.floor(Math.random() * Math.floor(3));
 				switch(rand)
 				{
 					case 0:
@@ -52,7 +58,7 @@ exports.authHandler = function(req, res) {
 				//return clientid or error
 				var end = new Date() - start;
 				logging.add('Authenticate',new Date(Date.now()),obj.clientid,obj.Success,end);
-				res.send(JSON.stringify(obj));
+				res.send(JSON.stringify(obj));*/
 			break;
 			case "update":
 				//will pass req.body.clientid
