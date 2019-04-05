@@ -4,8 +4,8 @@ const fr = require('face-recognition');
 
 const detector = fr.FaceDetector();
 
-const dimension = 300;
-const image_quality = 20;
+const dimension = 500;
+const image_quality = 30;
 
 const randomInt = (min,max) => {
 	return parseInt((Math.random() * (max - min + 1)), 10) + min;
