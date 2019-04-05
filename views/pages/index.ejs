@@ -105,10 +105,11 @@
 		<h2>Authenticate User</h2>
 		<form>
 			<label for="images">Upload Image:</label>
-			<input type="file" name="images" onchange="previewFile()">
+			<input type="file" name="images" onchange="previewFile()"><br/><br/>
 			<div class="preview" id="preview1"></div>
-			<input type="button" name="Upload" value="Upload" onclick="sendAuthentication()">
+			<input style='display: none; background-color: #45BFAA; border: none; padding: 10px; width: 54%;' id="Upload2" type="button" name="Upload" value="Upload" onclick="sendAuthentication()">
 		</form>
+		<br/><br/>
 		<h3>Result</h3>
 		<div class="result-box" id="a_result">
 			
@@ -152,6 +153,7 @@
   			}
 			
 			document.getElementById("Upload1").style.display = "block";
+			document.getElementById("Upload2").style.display = "block";
 
   			if (files) {
     			[].forEach.call(files, readAndPreview);
@@ -194,6 +196,7 @@
   			}
 			
 			document.getElementById("Upload1").style.display = "block";
+			document.getElementById("Upload2").style.display = "block";
   			
   			//send via ajax
   			readAndPreview(file);
