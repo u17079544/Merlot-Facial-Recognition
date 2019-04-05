@@ -103,10 +103,11 @@ exports.Update = function(client_id, images_json){
 		client.connect((err, db) => {
 			if(err) reject(err);
 			const collection = client.db("FacialRecDataSet").collection("FacialRecTable");
-			collection.findOne({clientID : client_id, photos: images_json}).then( (value) => {
+			collection.findOne({clientID : client_id}).then( (value) => {
 				if (value === undefined) {
-					console.log(client_id + " no change in database");
-					resolve(false);
+					Insert(client_id, images_json);
+// 					console.log(client_id + " no change in database");
+					resolve(true);
 				} else {
 					// const model = faceRec.train_model(client_id, images_json);
 					var obj = {clientID : client_id};
