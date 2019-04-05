@@ -27,7 +27,7 @@ const authenticate_client = (client_base64_image, callback) => {
 	} else {
 	ip.process_image(client_base64_image, (client_face) => {
 		load_models((model_list) => {
-			const required_accuracy = 0.75;
+			const required_accuracy = 0.70;
 			var prediction_accuracy = 0;
 			var client_id = '';
 			var face_prediction = null;
