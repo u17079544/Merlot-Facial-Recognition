@@ -58,18 +58,21 @@ const authenticate_client = (client_base64_image, callback) => {
 };
 
 const train_model = (client_id, json_base64_images, callback) => {
+	var valid = true;
 	if (!Array.isArray(json_base64_images)) {
-		return;
+		//do nothing
 	} else {
 		for (var i=0; i < json_base64_images.length; i++) {
-			if (!validate(json_base64_images[i])
-			    return;
+			if (!validate(json_base64_images[i]))
+				valid = false;    
 		}	
+		if (valid) {
+			ip.process_images(json_base64_images, (client_faces) => {
+				recognizer.addFaces(client_faces, client_id);
+				callback(recognizer.serialize());
+			});
+		}
 	}
-	ip.process_images(json_base64_images, (client_faces) => {
-		recognizer.addFaces(client_faces, client_id);
-		callback(recognizer.serialize());
-	});
 };
 
 module.exports = {
