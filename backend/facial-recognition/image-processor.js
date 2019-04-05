@@ -1,61 +1,23 @@
 const fs = require('fs');
+const Jimp = require("jimp");
 const fr = require('face-recognition');
 
 const detector = fr.FaceDetector();
 
-/** @function process_image */
-/**
- * Train the model with images and a classification label.
- * @param {string} base64_image - An image in base64 format containing a face.
- * @returns {Object} -  The processed image containing only a face.
- */
-const process_image = (base64_image) => {
-	var image_path = '';
-	var temp_image = null;
-	var face = null;
-	var detected_faces = [];
+const dimension = 300;
+const image_quality = 20;
 
-	image_path = save_image(base64_image);
-	temp_image = fr.loadImage(image_path);
-	delete_image(image_path);
-	detected_faces = detector.detectFaces(temp_image);
-	if (detected_faces[0] !== undefined)
-		face = detected_faces[0];
-	//else ignore invalid image or faceless image
-
-	return face;
+const randomInt = (min,max) => {
+	return parseInt((Math.random() * (max - min + 1)), 10) + min;
 };
 
-/** @function train_model */
-/**
- * Train the model with images and a classification label.
- * @param {JSONArray} json_base64_images - The images containing faces, in a JSON Array in base64 format.
- * @returns {Array} - An array of processed images containing only faces.
- */
-const process_images = (json_base64_images) => {
-	var image_path = '';
-	var temp_image = null;
-	var detected_faces = [];
-	var face_collection = [];
-
-	if (Array.isArray(json_base64_images)) {
-		for (var i=0; i < json_base64_images.length; i++) {
-			image_path = save_image(json_base64_images[i]);
-			temp_image = fr.loadImage(image_path);
-			delete_image(image_path);
-			detected_faces = detector.detectFaces(temp_image);
-			if (detected_faces[0] !== undefined)
-				face_collection.push(detected_faces[0]);
-			//else ignore invalid images or faceless images
-		}
-	} else 
-		throw "Error: expected an array of Base64 images."; //for now, later use exceptions.js
-
-	return face_collection;	
+const generateName = () => {
+	var randomString = '';
+	var randomNumber = randomInt(4,8);
+	for (var i=0; i < randomNumber; i++)
+		randomString += randomInt(1,1000);
+	return randomString;
 };
-
-//helper functions
-const validate_image = (image) => {};
 
 const convert_image = (base64_image) => {
 	var matches = base64_image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
@@ -70,17 +32,75 @@ const convert_image = (base64_image) => {
     return image_info;
 };
 
-const save_image = (base64_image) => {
+function load_image(base64_image) {
+	var filename = '';
 	var image_type_regex = /\/(.*?)$/;
-	var image_buffer = convert_image(base64_image);
-	var image_dir = './'; //for now, later use a folder or something.
-	var image_name = 'tmp-img';
-	var image_type = image_buffer.type.match(image_type_regex);
-	var image_path = image_dir + image_name + '.' + image_type[1];
+	var current_image = null;
+	var image_promise = {};
+	var extension = '';
+	
+	current_image = convert_image(base64_image);
+	extension = current_image.type.match(image_type_regex)[1];
+	filename = generateName() + '.' + extension;
+	image_promise.image = Jimp.read(current_image.data);
+	image_promise.name = filename;
 
-	fs.writeFileSync(image_path, image_buffer.data);
+	return image_promise;
+}
 
-	return image_path;
+function write_image(image_promise, image_filename) {
+	return new Promise((resolve, reject) => {
+		image_promise
+		.resize(dimension,dimension)
+		.quality(image_quality)
+		.write(image_filename, () => {
+			resolve(image_filename);
+		});
+	});
+}
+
+async function load_all_images(json_base64_images) {
+	var single_promise = null;
+	var single_image = null;
+	var filenames = [];
+	for (var i=0; i < json_base64_images.length; i++) {
+		single_promise = load_image(json_base64_images[i]);
+		single_image = await single_promise.image;
+		filenames.push(await write_image(single_image, single_promise.name));
+	}
+
+	return filenames;
+}
+
+const process_image = (base64_image, callback) => {
+	var image_promise = load_image(base64_image);
+	image_promise.image.then((image) => {
+		write_image(image, image_promise.name).then((filename) => {
+			var current_image = fr.loadImage(filename);
+			var detected_faces = detector.detectFaces(current_image);
+			var face = null;
+			if (detected_faces[0] !== undefined)
+				face = detected_faces[0];
+			callback(face);
+			delete_image(filename);
+		});
+	});
+};
+
+const process_images = (json_base64_images, callback) => {
+	load_all_images(json_base64_images).then((filenames) => {
+		var current_image = null;
+		var detected_faces = null;
+		var face_collection = [];
+		for (var i=0; i < filenames.length; i++) {
+			current_image = fr.loadImage(filenames[i]);
+			detected_faces = detector.detectFaces(current_image)
+			if (detected_faces[0] !== undefined)
+				face_collection.push(detected_faces[0]);
+			delete_image(filenames[i]);
+		}
+		callback(face_collection);
+	});
 };
 
 const delete_image = (image_name) => {
