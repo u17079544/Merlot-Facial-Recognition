@@ -1,6 +1,6 @@
 var request = require('request');
 var expect = require('chai').expect;
-var log = require('./log');
+var log = require('../../backend/logging/Log.js');
 
 describe('add', function(){
 	it('should return a JSON array containing the added element', function(){
